@@ -14,7 +14,6 @@ SOURCES_TEST:= $(wildcard parser/*.c)
 
 OBJ_GCOV_DIR := obj_gcov
 OBJECTS_GCOV := $(addprefix obj_gcov/,$(SOURCES_TEST:.c=.o))
-# HEADER = parser/3d.h
 
 all: install
 

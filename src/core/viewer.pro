@@ -1,8 +1,8 @@
 QT += core gui opengl openglwidgets
 QT += 3dcore 3dextras
-# QT += gifimage
 
 include(../gif_image_qt/src/gifimage/qtgifimage.pri)
+# QT += gifimage
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,21 +15,19 @@ DEFINES += PROJECT_PATH=\"\\\"$${_PRO_FILE_PWD_}/\\\"\"
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-#    ogl.cpp \
-#    ../parser/parser.c \
-#    ../parser/move.c \
-#    ../parser/rotate.c \
-#    ../parser/scale.c
+    ogl.cpp \
+    ../parser/parser.c \
+    ../parser/rotate.c
 
 HEADERS += \
     mainwindow.h \
-#    ogl.h \
-#    ../parser/3d.h
+    ogl.h
+    ../parser/parser.h
 
 FORMS += \
     mainwindow.ui
 
-#LIBS += -lOpenGL
+# LIBS += -lOpenGL
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
