@@ -26,13 +26,6 @@ void parse_file(char *file_name, struct info *src) {
   }
 
   fclose(file);
-
-  float norm = 1.0 / (src->max_v);
-
-  // Normalization
-  for (int i = 0; i < src->index_v; i++) {
-    src->arr_v[i] *= norm;
-  }
 }
 
 static void parse_v(FILE *file, struct info *src) {

@@ -17,16 +17,17 @@ class OGLW : public QOpenGLWidget, protected QOpenGLFunctions {
 public:
   OGLW(QWidget *parent = nullptr);
   ~OGLW();
-  int lineType = 1;    // 1 for stipple
-  int perspective = 0; // 1 for on perspective mode
-  float lineWidth = 1; // 1 is default and min, max 5
-  float pointSize = 2; // 1 is default, max 10, min 2
-  int pointType = 2;   // 0 - disable, 1 - circle, 2 - square
+  int line_type = 1;
+  int perspective = 0;
+  float line_width = 1;
+  float point_size = 2;
+  int point_type = 2;
+  float scale = 2;
   QVector3D lineColorV = {1, 1, 1};
   QVector3D pointColorV = {1, 1, 1};
   QColor backgroundColor;
-  QColor lineColor;
-  QColor pointColor;
+  QColor line_color;
+  QColor point_color;
 
   QString file_str;
 

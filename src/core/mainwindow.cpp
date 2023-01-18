@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include <unistd.h>
 
 #include "ogl.h"
 
@@ -10,50 +11,76 @@ Main_Window::Main_Window(QWidget *parent)
   OGLWidget = new OGLW;
   ui->gridLayout_2->addWidget(OGLWidget, 0, 0);
 
+  init_sliders();
+
   connect(ui->pushButton, SIGNAL(pressed()), this, SLOT(choose_file_pressed()));
+  connect(ui->pushButton_4, SIGNAL(pressed()), this, SLOT(press_start_gif()));
+  connect(ui->pushButton_5, SIGNAL(pressed()), this, SLOT(press_stop_gif()));
 }
 
-void Main_Window::press_gif() {
+void Main_Window::create_frame() {
+  QPixmap screen_gif(OGLWidget->size());
+  OGLWidget->render(&screen_gif);
+
+  QImage gif_image = screen_gif.toImage();
+
+  gif->addFrame(gif_image, 1000 / gif_fps);
+}
+
+void Main_Window::press_start_gif() {
+  ui->pushButton_4->setEnabled(0);
   gif = new QGifImage;
+
   gif->setDefaultDelay(1000 / gif_fps);
 
-  start_time = 0, tmp_time = 1000 / gif_fps;
-  timer = new QTimer(this);
-
-  connect(timer, SIGNAL(timeout()), this, SLOT(oneGif()));
-  timer->start(1000 / gif_fps);
+  gif_timer = new QTimer(this);
+  connect(gif_timer, SIGNAL(timeout()), this, SLOT(create_frame()));
+  gif_timer->start(1000 / gif_fps);
 }
 
-void Main_Window::one_gif() {
-  if (start_time == tmp_time) {
-    QPixmap screenGIF(OGLWidget->size()); // *2
-    //        screenGIF.setDevicePixelRatio(2);  // improves quality. mult the
-    //        size by 2 line above ^
-    OGLWidget->render(&screenGIF);
-    QImage image;
-    image = screenGIF.toImage();
-    gif->addFrame(image, 1000 / gif_fps);
-    time_print = (float)start_time / 1e3; // GIF time in seconds
-    //        with 0.1 second precision (50 updates)
-    // ui->Counter->setNum((int)(time_print + 1));
-    tmp_time += 1000 / gif_fps;
-  }
-  if (start_time == 1000 * gif_length) {
-    time_t now = time(0);
-    tm *time = localtime(&now);
-    QDir d = QFileInfo(PROJECT_PATH).absoluteDir();
-    d.setPath(QDir::cleanPath(d.filePath(QStringLiteral(".."))));
-    QString path = d.path();
-    QString name = path + "/gifs/" + QString::number(time->tm_hour) + "-" +
-                   QString::number(time->tm_min) + "-" +
-                   QString::number(time->tm_sec) + ".gif";
-    gif->save(name);
-    free(gif);
+void Main_Window::press_stop_gif() {
+  ui->pushButton_4->setEnabled(1);
 
-    timer->stop();
-    // ui->Counter->setText("");
+  gif_timer->stop();
+
+  time_t now = time(0);
+  tm *time = localtime(&now);
+  QDir d = QFileInfo(PROJECT_PATH).absoluteDir();
+  d.setPath(QDir::cleanPath(d.filePath(QStringLiteral(".."))));
+  QString path = d.path();
+  QString name = path + "/gif/" + QString::number(time->tm_hour) + "-" +
+                 QString::number(time->tm_min) + "-" +
+                 QString::number(time->tm_sec) + ".gif";
+  gif->save(name);
+  free(gif);
+}
+
+void Main_Window::init_sliders() {
+  ui->horizontalSlider_13->setValue(OGLWidget->point_size * 10);
+  ui->horizontalSlider_10->setValue(OGLWidget->line_width * 10);
+  ui->horizontalSlider_11->setValue(OGLWidget->scale * 10);
+
+  if (OGLWidget->point_type == 2) {
+    ui->radioButton_5->toggle();
+  } else if (OGLWidget->point_type == 1) {
+    ui->radioButton_4->toggle();
+  } else {
+    ui->radioButton_3->toggle();
   }
-  start_time += 1000 / gif_fps;
+
+  // if (OGLWidget->line_type) {
+  //   ui->DashedEdgeButton->toggle();
+  // } else {
+  //   ui->SolidEdgeButton->toggle();
+  // }
+
+  // if (OGLWidget->perspective)
+  //   ui->PerspectivePrButton->toggle();
+  // else
+  //   ui->OrthoPrButton->toggle();
+
+  ui->horizontalSlider_9->setValue(OGLWidget->line_color.hslHue());
+  ui->horizontalSlider_12->setValue(OGLWidget->point_color.hslHue());
 }
 
 void Main_Window::choose_file_pressed() {
@@ -62,7 +89,8 @@ void Main_Window::choose_file_pressed() {
                                    QDir::homePath(), tr("Text Files (*.obj)"));
   ui->lineEdit->setText(OGLWidget->file_str);
   if (!OGLWidget->file_str.isEmpty()) {
-    parse_file((char *)OGLWidget->file_str.toStdString().c_str(), &(OGLWidget->dataset));
+    parse_file((char *)OGLWidget->file_str.toStdString().c_str(),
+               &(OGLWidget->dataset));
     OGLWidget->update();
 
     ui->lineEdit_14->setText(QString::number(OGLWidget->dataset.index_p));
@@ -74,4 +102,49 @@ Main_Window::~Main_Window() {
   free_dataset(&(OGLWidget->dataset));
   delete OGLWidget;
   delete ui;
+}
+
+void Main_Window::on_radioButton_5_pressed() {
+  OGLWidget->point_type = 1;
+  OGLWidget->update();
+}
+
+void Main_Window::on_radioButton_4_pressed() {
+  OGLWidget->point_type = 2;
+  OGLWidget->update();
+}
+
+void Main_Window::on_radioButton_3_pressed() {
+  OGLWidget->point_type = 0;
+  OGLWidget->update();
+}
+
+void Main_Window::on_horizontalSlider_10_valueChanged(int value) {
+  OGLWidget->line_width = value / 10.0;
+  OGLWidget->update();
+}
+
+void Main_Window::on_horizontalSlider_13_valueChanged(int value) {
+  OGLWidget->point_size = value / 10.0;
+  OGLWidget->update();
+}
+
+void Main_Window::on_horizontalSlider_11_valueChanged(int value) {
+  OGLWidget->scale = (30 - 0.3) * value / 100;
+  OGLWidget->update();
+}
+
+// void MainWindow::on_BackColorSlider_valueChanged(int value) {
+//   OGLWidget->backgroundColor.setHsl(value, 110,100);
+//   OGLWidget->update();
+// }
+
+void Main_Window::on_horizontalSlider_9_valueChanged(int value) {
+  OGLWidget->line_color.setHsl(value, 255, 127);
+  OGLWidget->update();
+}
+
+void Main_Window::on_horizontalSlider_12_valueChanged(int value) {
+  OGLWidget->point_color.setHsl(value, 255, 127);
+  OGLWidget->update();
 }
