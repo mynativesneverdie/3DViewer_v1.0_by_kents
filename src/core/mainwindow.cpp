@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <unistd.h>
+#include <chrono>
 
 #include "ogl.h"
 
@@ -16,15 +16,19 @@ Main_Window::Main_Window(QWidget *parent)
   connect(ui->pushButton, SIGNAL(pressed()), this, SLOT(choose_file_pressed()));
   connect(ui->pushButton_4, SIGNAL(pressed()), this, SLOT(press_start_gif()));
   connect(ui->pushButton_5, SIGNAL(pressed()), this, SLOT(press_stop_gif()));
+  connect(ui->pushButton_2, SIGNAL(pressed()), this, SLOT(bmp_screen()));
+  connect(ui->pushButton_3, SIGNAL(pressed()), this, SLOT(jpg_screen()));
 }
 
 void Main_Window::create_frame() {
-  QPixmap screen_gif(OGLWidget->size());
-  OGLWidget->render(&screen_gif);
+  if (!ui->pushButton_4->isEnabled()) {
+    QPixmap screen_gif(OGLWidget->size());
+    OGLWidget->render(&screen_gif);
 
-  QImage gif_image = screen_gif.toImage();
+    QImage gif_image = screen_gif.toImage();
 
-  gif->addFrame(gif_image, 1000 / gif_fps);
+    gif->addFrame(gif_image, 1000 / gif_fps);
+  }
 }
 
 void Main_Window::press_start_gif() {
@@ -40,19 +44,48 @@ void Main_Window::press_start_gif() {
 
 void Main_Window::press_stop_gif() {
   ui->pushButton_4->setEnabled(1);
-
   gif_timer->stop();
 
-  time_t now = time(0);
-  tm *time = localtime(&now);
-  QDir d = QFileInfo(PROJECT_PATH).absoluteDir();
-  d.setPath(QDir::cleanPath(d.filePath(QStringLiteral(".."))));
-  QString path = d.path();
-  QString name = path + "/gif/" + QString::number(time->tm_hour) + "-" +
-                 QString::number(time->tm_min) + "-" +
-                 QString::number(time->tm_sec) + ".gif";
+  unsigned int now_time =
+      std::chrono::duration_cast<std::chrono::milliseconds>(
+          std::chrono::system_clock::now().time_since_epoch())
+          .count();
+
+  QString name = "./gif/" + QString::number(now_time) + ".gif";
+
   gif->save(name);
+  
   free(gif);
+}
+
+void Main_Window::jpg_screen() {
+  unsigned int now_time =
+      std::chrono::duration_cast<std::chrono::milliseconds>(
+          std::chrono::system_clock::now().time_since_epoch())
+          .count();
+
+  QString name = "./screens/" + QString::number(now_time) + ".jpeg";
+
+  QPixmap pixmap(OGLWidget->size() * 2);
+  pixmap.setDevicePixelRatio(2);
+  OGLWidget->render(&pixmap);
+
+  pixmap.save(name, "JPEG", 100);
+}
+
+void Main_Window::bmp_screen() {
+  unsigned int now_time =
+      std::chrono::duration_cast<std::chrono::milliseconds>(
+          std::chrono::system_clock::now().time_since_epoch())
+          .count();
+
+  QString name = "./screens/" + QString::number(now_time) + ".bmp";
+
+  QPixmap pixmap(OGLWidget->size() * 2);
+  pixmap.setDevicePixelRatio(2);
+  OGLWidget->render(&pixmap);
+
+  pixmap.save(name, "BMP", 100);
 }
 
 void Main_Window::init_sliders() {

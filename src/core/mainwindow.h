@@ -38,6 +38,8 @@ private slots:
   void on_radioButton_5_pressed();
 
   void create_frame();
+  void jpg_screen();
+  void bmp_screen();
 
 
 private:
