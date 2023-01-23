@@ -15,7 +15,6 @@ Main_Window::Main_Window(QWidget *parent)
 
   connect(ui->pushButton, SIGNAL(pressed()), this, SLOT(choose_file_pressed()));
   connect(ui->pushButton_4, SIGNAL(pressed()), this, SLOT(press_start_gif()));
-  connect(ui->pushButton_5, SIGNAL(pressed()), this, SLOT(press_stop_gif()));
   connect(ui->pushButton_2, SIGNAL(pressed()), this, SLOT(bmp_screen()));
   connect(ui->pushButton_3, SIGNAL(pressed()), this, SLOT(jpg_screen()));
   connect(ui->radioButton_3, SIGNAL(pressed()), this, SLOT(on_radioButton_3_pressed()));
@@ -25,42 +24,45 @@ Main_Window::Main_Window(QWidget *parent)
   connect(ui->radioButton_dashed, SIGNAL(pressed()), this, SLOT(on_radioButton_dashed_pressed()));
 }
 
-void Main_Window::create_frame() {
-  if (!ui->pushButton_4->isEnabled()) {
-    QPixmap screen_gif(OGLWidget->size());
-    OGLWidget->render(&screen_gif);
-
-    QImage gif_image = screen_gif.toImage();
-
-    gif->addFrame(gif_image, 1000 / gif_fps);
-  }
-}
-
 void Main_Window::press_start_gif() {
   ui->pushButton_4->setEnabled(0);
+
   gif = new QGifImage;
-
   gif->setDefaultDelay(1000 / gif_fps);
-
+  
+  start_time = 0;
   gif_timer = new QTimer(this);
+
   connect(gif_timer, SIGNAL(timeout()), this, SLOT(create_frame()));
   gif_timer->start(1000 / gif_fps);
 }
 
-void Main_Window::press_stop_gif() {
-  ui->pushButton_4->setEnabled(1);
-  gif_timer->stop();
+void Main_Window::create_frame() {
+  if (start_time != GIF_TIME) {
+    QPixmap gif_screen(OGLWidget->size());
 
-  unsigned int now_time =
-      std::chrono::duration_cast<std::chrono::milliseconds>(
-          std::chrono::system_clock::now().time_since_epoch())
-          .count();
+    OGLWidget->render(&gif_screen);
+    QImage image;
+    image = gif_screen.toImage();
 
-  QString name = "./gif/" + QString::number(now_time) + ".gif";
+    gif->addFrame(image, 1000 / gif_fps);
 
-  gif->save(name);
-  
-  free(gif);
+    start_time += 1000 / gif_fps;
+  } else {
+    gif_timer->stop();
+    ui->pushButton_4->setEnabled(1);
+    
+    time_t now = time(0);
+    tm *time = localtime(&now);
+    QDir d = QFileInfo(PROJECT_PATH).absoluteDir();
+    d.setPath(QDir::cleanPath(d.filePath(QStringLiteral(".."))));
+    QString path = d.path();
+    QString name = path + "/gif/" + QString::number(time->tm_hour) + "-" +
+                   QString::number(time->tm_min) + "-" +
+                   QString::number(time->tm_sec) + ".gif";
+    gif->save(name);
+    free(gif);
+  }
 }
 
 void Main_Window::jpg_screen() {

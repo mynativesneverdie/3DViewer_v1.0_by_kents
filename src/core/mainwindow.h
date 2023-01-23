@@ -7,6 +7,8 @@
 
 #include "ogl.h"
 
+#define GIF_TIME 5000
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Main_Window;
@@ -24,7 +26,6 @@ public:
 
 private slots:
   void press_start_gif();
-  void press_stop_gif();
   void choose_file_pressed();
 
   void on_horizontalSlider_13_valueChanged(int value);
@@ -52,7 +53,7 @@ private:
   QGifImage *gif;
 
   int start_time, tmp_time;
-  float time_print;
+  // float time_print;
   const int gif_fps = 10, gif_length = 5;
   QTimer *gif_timer;
 };
