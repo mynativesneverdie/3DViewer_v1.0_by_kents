@@ -18,6 +18,11 @@ Main_Window::Main_Window(QWidget *parent)
   connect(ui->pushButton_5, SIGNAL(pressed()), this, SLOT(press_stop_gif()));
   connect(ui->pushButton_2, SIGNAL(pressed()), this, SLOT(bmp_screen()));
   connect(ui->pushButton_3, SIGNAL(pressed()), this, SLOT(jpg_screen()));
+  connect(ui->radioButton_3, SIGNAL(pressed()), this, SLOT(on_radioButton_3_pressed()));
+  connect(ui->radioButton_4, SIGNAL(pressed()), this, SLOT(on_radioButton_4_pressed()));
+  connect(ui->radioButton_5, SIGNAL(pressed()), this, SLOT(on_radioButton_5_pressed()));
+  connect(ui->radioButton_solid, SIGNAL(pressed()), this, SLOT(on_radioButton_solid_pressed()));
+  connect(ui->radioButton_dashed, SIGNAL(pressed()), this, SLOT(on_radioButton_dashed_pressed()));
 }
 
 void Main_Window::create_frame() {
@@ -93,14 +98,6 @@ void Main_Window::init_sliders() {
   ui->horizontalSlider_10->setValue(OGLWidget->line_width * 10);
   ui->horizontalSlider_11->setValue(OGLWidget->scale * 10);
 
-  if (OGLWidget->point_type == 2) {
-    ui->radioButton_5->toggle();
-  } else if (OGLWidget->point_type == 1) {
-    ui->radioButton_4->toggle();
-  } else {
-    ui->radioButton_3->toggle();
-  }
-
   // if (OGLWidget->line_type) {
   //   ui->DashedEdgeButton->toggle();
   // } else {
@@ -138,12 +135,12 @@ Main_Window::~Main_Window() {
 }
 
 void Main_Window::on_radioButton_5_pressed() {
-  OGLWidget->point_type = 1;
+  OGLWidget->point_type = 2;
   OGLWidget->update();
 }
 
 void Main_Window::on_radioButton_4_pressed() {
-  OGLWidget->point_type = 2;
+  OGLWidget->point_type = 1;
   OGLWidget->update();
 }
 
@@ -167,10 +164,10 @@ void Main_Window::on_horizontalSlider_11_valueChanged(int value) {
   OGLWidget->update();
 }
 
-// void MainWindow::on_BackColorSlider_valueChanged(int value) {
-//   OGLWidget->backgroundColor.setHsl(value, 110,100);
-//   OGLWidget->update();
-// }
+ void Main_Window::on_BackColorSlider_valueChanged(int value) {
+   OGLWidget->backgroundColor.setHsl(value, 255, 127);
+   OGLWidget->update();
+ }
 
 void Main_Window::on_horizontalSlider_9_valueChanged(int value) {
   OGLWidget->line_color.setHsl(value, 255, 127);
@@ -181,3 +178,16 @@ void Main_Window::on_horizontalSlider_12_valueChanged(int value) {
   OGLWidget->point_color.setHsl(value, 255, 127);
   OGLWidget->update();
 }
+
+void Main_Window::on_radioButton_solid_pressed()
+{
+    OGLWidget->line_type = 0;
+    OGLWidget->update();
+}
+
+void Main_Window::on_radioButton_dashed_pressed()
+{
+    OGLWidget->line_type = 1;
+    OGLWidget->update();
+}
+

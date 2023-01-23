@@ -12,7 +12,7 @@ struct info {
   unsigned int *arr_f;
   float *arr_v;
   float *arr_v_copy;
-  float *arr_p;
+  unsigned int *arr_p;
   float max_v;
 };
 

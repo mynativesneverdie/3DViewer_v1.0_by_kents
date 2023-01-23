@@ -82,7 +82,7 @@ void OGLW::paintGL() {
   // Normalization
   float norm = 1.0 / (dataset.max_v) * scale;
 
-  for (int i = 0; i < dataset.index_v; i++) {
+  for (unsigned int i = 0; i < dataset.index_v; i++) {
     dataset.arr_v_copy[i] *= norm;
   }
 
@@ -92,20 +92,37 @@ void OGLW::paintGL() {
   glLineWidth(line_width);
 
   glEnableClientState(GL_VERTEX_ARRAY);
+
   // Set dots color
   glColor3f(point_color.redF(), point_color.greenF(), point_color.blueF());
 
   // Draw dots
   glVertexPointer(3, GL_FLOAT, 0, dataset.arr_v_copy);
-  glDrawArrays(GL_POINTS, 0, dataset.index_v / 3);
+  if (point_type == 2) {
+      glEnable(GL_POINT_SMOOTH);
+      glDrawArrays(GL_POINTS, 0, dataset.index_v / 3);
+      glDisable(GL_POINT_SMOOTH);
+  }
+  if (point_type == 1) {
+      glDrawArrays(GL_POINTS, 0, dataset.index_v / 3);
+  }
+  if (point_type == 0) {
+      glDrawArrays(GL_POINT_SMOOTH, 0, dataset.index_v / 3);
+  }
 
-  // Set line color
+  // Set line color and type
   glColor3f(line_color.redF(), line_color.greenF(), line_color.blueF());
+  if (line_type) {
+      glLineStipple(3, 0x00FF);
+      glEnable(GL_LINE_STIPPLE);
+  } else {
+      glDisable(GL_LINE_STIPPLE);
+  }
 
   // Draw polygons
   int k = 0;
 
-  for (int i = 0; i < dataset.index_p; i++) {
+  for (unsigned int i = 0; i < dataset.index_p; i++) {
     int coords_num = dataset.arr_p[i];
     float array[coords_num * 3] = {0};
 

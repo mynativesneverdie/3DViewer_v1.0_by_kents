@@ -32,6 +32,7 @@ private slots:
   void on_horizontalSlider_9_valueChanged(int value);
   void on_horizontalSlider_12_valueChanged(int value);
   void on_horizontalSlider_11_valueChanged(int value);
+  void on_BackColorSlider_valueChanged(int value);
 
   void on_radioButton_3_pressed();
   void on_radioButton_4_pressed();
@@ -41,6 +42,9 @@ private slots:
   void jpg_screen();
   void bmp_screen();
 
+  void on_radioButton_solid_pressed();
+
+  void on_radioButton_dashed_pressed();
 
 private:
   Ui::Main_Window *ui;

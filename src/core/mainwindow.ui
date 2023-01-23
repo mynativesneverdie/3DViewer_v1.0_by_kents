@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>679</width>
-    <height>524</height>
+    <width>711</width>
+    <height>559</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>450</y>
+      <x>0</x>
+      <y>500</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -30,9 +30,9 @@
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>450</y>
-      <width>411</width>
+      <x>90</x>
+      <y>500</y>
+      <width>611</width>
       <height>25</height>
      </rect>
     </property>
@@ -44,9 +44,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
+      <y>20</y>
       <width>211</width>
-      <height>61</height>
+      <height>89</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -130,7 +130,7 @@
       <x>10</x>
       <y>130</y>
       <width>211</width>
-      <height>61</height>
+      <height>89</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -225,7 +225,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>0</y>
       <width>67</width>
       <height>17</height>
      </rect>
@@ -238,9 +238,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>220</y>
+      <y>230</y>
       <width>211</width>
-      <height>21</height>
+      <height>27</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
@@ -267,7 +267,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>200</y>
+      <y>220</y>
       <width>67</width>
       <height>17</height>
      </rect>
@@ -279,10 +279,10 @@
    <widget class="QWidget" name="gridLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>450</y>
+      <x>560</x>
+      <y>380</y>
       <width>141</width>
-      <height>21</height>
+      <height>27</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_5">
@@ -326,7 +326,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>250</y>
+      <y>260</y>
       <width>67</width>
       <height>17</height>
      </rect>
@@ -339,9 +339,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>270</y>
+      <y>280</y>
       <width>211</width>
-      <height>71</height>
+      <height>87</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_6">
@@ -359,16 +359,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_11">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_15">
        <property name="text">
@@ -377,7 +367,7 @@
       </widget>
      </item>
      <item row="0" column="0" colspan="2">
-      <widget class="QRadioButton" name="radioButton">
+      <widget class="QRadioButton" name="radioButton_solid">
        <property name="text">
         <string>Solid</string>
        </property>
@@ -385,23 +375,16 @@
      </item>
      <item row="1" column="2">
       <widget class="QSlider" name="horizontalSlider_9">
+       <property name="maximum">
+        <number>255</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_10">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
-      <widget class="QRadioButton" name="radioButton_2">
+      <widget class="QRadioButton" name="radioButton_dashed">
        <property name="text">
         <string>Dashed</string>
        </property>
@@ -413,7 +396,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>350</y>
+      <y>370</y>
       <width>67</width>
       <height>17</height>
      </rect>
@@ -425,17 +408,38 @@
    <widget class="QWidget" name="gridLayoutWidget_6">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>370</y>
-      <width>211</width>
-      <height>71</height>
+      <x>0</x>
+      <y>380</y>
+      <width>251</width>
+      <height>116</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_7">
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="radioButton_5">
+       <property name="text">
+        <string>Circle</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QRadioButton" name="radioButton_4">
+       <property name="text">
+        <string>Square</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_18">
        <property name="text">
         <string>Color</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QRadioButton" name="radioButton_3">
+       <property name="text">
+        <string>None</string>
        </property>
       </widget>
      </item>
@@ -446,15 +450,11 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QRadioButton" name="radioButton_3">
-       <property name="text">
-        <string>None</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="2">
       <widget class="QSlider" name="horizontalSlider_12">
+       <property name="maximum">
+        <number>255</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -467,48 +467,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="radioButton_4">
-       <property name="text">
-        <string>Square</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="radioButton_5">
-       <property name="text">
-        <string>Circle</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_15">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_16">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget_7">
     <property name="geometry">
      <rect>
-      <x>234</x>
-      <y>410</y>
-      <width>231</width>
+      <x>280</x>
+      <y>400</y>
+      <width>161</width>
       <height>31</height>
      </rect>
     </property>
@@ -521,17 +487,10 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_17">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
+      <widget class="QSlider" name="BackColorSlider">
+       <property name="maximum">
+        <number>255</number>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QSlider" name="horizontalSlider_14">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -542,8 +501,8 @@
    <widget class="QLabel" name="label_21">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>390</y>
+      <x>280</x>
+      <y>380</y>
       <width>81</width>
       <height>17</height>
      </rect>
@@ -555,8 +514,8 @@
    <widget class="QLabel" name="label_22">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>390</y>
+      <x>280</x>
+      <y>440</y>
       <width>81</width>
       <height>17</height>
      </rect>
@@ -568,8 +527,8 @@
    <widget class="QWidget" name="gridLayoutWidget_8">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>410</y>
+      <x>280</x>
+      <y>460</y>
       <width>201</width>
       <height>31</height>
      </rect>
@@ -594,9 +553,9 @@
    <widget class="QLabel" name="label_25">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>350</y>
-      <width>81</width>
+      <x>480</x>
+      <y>460</y>
+      <width>51</width>
       <height>17</height>
      </rect>
     </property>
@@ -607,9 +566,9 @@
    <widget class="QWidget" name="gridLayoutWidget_9">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>340</y>
-      <width>151</width>
+      <x>530</x>
+      <y>460</y>
+      <width>168</width>
       <height>31</height>
      </rect>
     </property>
@@ -633,21 +592,21 @@
    <widget class="QLabel" name="label_26">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>350</y>
-      <width>81</width>
+      <x>500</x>
+      <y>430</y>
+      <width>31</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>gif</string>
+     <string>GIF</string>
     </property>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget_10">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>340</y>
+      <x>530</x>
+      <y>420</y>
       <width>171</width>
       <height>31</height>
      </rect>
@@ -674,8 +633,8 @@
      <rect>
       <x>230</x>
       <y>10</y>
-      <width>441</width>
-      <height>321</height>
+      <width>471</width>
+      <height>361</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2"/>
@@ -686,7 +645,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>679</width>
+     <width>711</width>
      <height>22</height>
     </rect>
    </property>

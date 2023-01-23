@@ -37,11 +37,11 @@ static void parse_v(FILE *file, struct info *src) {
     int ch_num =
         fscanf(file, "%f %f %f", &src->arr_v[src->index_v + 0],
                &src->arr_v[src->index_v + 1], &src->arr_v[src->index_v + 2]);
-
-    src->arr_v_copy[src->index_v + 0] = src->arr_v[src->index_v + 0];
-    src->arr_v_copy[src->index_v + 1] = src->arr_v[src->index_v + 1];
-    src->arr_v_copy[src->index_v + 2] = src->arr_v[src->index_v + 2];
-
+    if (ch_num) {
+        src->arr_v_copy[src->index_v + 0] = src->arr_v[src->index_v + 0];
+        src->arr_v_copy[src->index_v + 1] = src->arr_v[src->index_v + 1];
+        src->arr_v_copy[src->index_v + 2] = src->arr_v[src->index_v + 2];
+    }
     for (int k = 0; k < 3; k++) {
       if (fabs(src->arr_v[src->index_v + k]) > src->max_v) {
         src->max_v = fabs(src->arr_v[src->index_v + k]);
@@ -65,7 +65,7 @@ static void parse_f(FILE *file, struct info *src) {
   int vertice = 0;
   int vertices_num = 0;
 
-  src->arr_p = realloc(src->arr_p, (src->index_p + 1) * sizeof(unsigned));
+  src->arr_p = realloc(src->arr_p, (src->index_p + 1) * sizeof(unsigned int));
 
   while (fscanf(file, "%d/%*d/%*d", &vertice) == 1) {
     src->arr_f = realloc(src->arr_f, (src->index_f + 1) * sizeof(unsigned));

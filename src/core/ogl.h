@@ -21,7 +21,7 @@ public:
   int perspective = 0;
   float line_width = 1;
   float point_size = 2;
-  int point_type = 2;
+  int point_type = 0;
   float scale = 2;
   QVector3D lineColorV = {1, 1, 1};
   QVector3D pointColorV = {1, 1, 1};
