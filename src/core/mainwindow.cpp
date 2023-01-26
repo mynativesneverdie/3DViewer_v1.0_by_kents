@@ -51,15 +51,13 @@ void Main_Window::create_frame() {
   } else {
     gif_timer->stop();
     ui->pushButton_4->setEnabled(1);
+
+    unsigned int now_time =
+      std::chrono::duration_cast<std::chrono::milliseconds>(
+          std::chrono::system_clock::now().time_since_epoch())
+          .count();
     
-    time_t now = time(0);
-    tm *time = localtime(&now);
-    QDir d = QFileInfo(PROJECT_PATH).absoluteDir();
-    d.setPath(QDir::cleanPath(d.filePath(QStringLiteral(".."))));
-    QString path = d.path();
-    QString name = path + "/gif/" + QString::number(time->tm_hour) + "-" +
-                   QString::number(time->tm_min) + "-" +
-                   QString::number(time->tm_sec) + ".gif";
+    QString name = "./gif/" + QString::number(now_time) + ".gif";
     gif->save(name);
     free(gif);
   }
@@ -98,18 +96,12 @@ void Main_Window::bmp_screen() {
 void Main_Window::init_sliders() {
   ui->horizontalSlider_13->setValue(OGLWidget->point_size * 10);
   ui->horizontalSlider_10->setValue(OGLWidget->line_width * 10);
-  ui->horizontalSlider_11->setValue(OGLWidget->scale * 10);
+  ui->horizontalSlider_11->setValue(OGLWidget->scale * 1);
 
-  // if (OGLWidget->line_type) {
-  //   ui->DashedEdgeButton->toggle();
-  // } else {
-  //   ui->SolidEdgeButton->toggle();
-  // }
-
-  // if (OGLWidget->perspective)
-  //   ui->PerspectivePrButton->toggle();
-  // else
-  //   ui->OrthoPrButton->toggle();
+  if (OGLWidget->perspective)
+    ui->radioButton_7->toggle();
+  else
+    ui->radioButton_6->toggle();
 
   ui->horizontalSlider_9->setValue(OGLWidget->line_color.hslHue());
   ui->horizontalSlider_12->setValue(OGLWidget->point_color.hslHue());
@@ -191,5 +183,15 @@ void Main_Window::on_radioButton_dashed_pressed()
 {
     OGLWidget->line_type = 1;
     OGLWidget->update();
+}
+
+void Main_Window::on_radioButton_7_pressed() {
+  OGLWidget->perspective = 1;
+  OGLWidget->update();
+}
+
+void Main_Window::on_radioButton_6_pressed() {
+  OGLWidget->perspective = 0;
+  OGLWidget->update();
 }
 

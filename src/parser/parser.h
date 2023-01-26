@@ -19,6 +19,6 @@ struct info {
 void parse_file(char *fileName, struct info *src);
 void free_dataset(struct info *src);
 
-void rotate(int len, float *src, float *res, double theta_x, double theta_y, double theta_z);
-
-#endif  // SRC_PARSER_PARSER_H_
+void rotate(int len, float *src, float *res, double theta_x, double theta_y,
+            double theta_z, int perspective);
+#endif // SRC_PARSER_PARSER_H_

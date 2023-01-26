@@ -1,5 +1,5 @@
 CC = gcc -g
-QMAKE_PATH = /home/iseestarz/Qt/6.2.4/gcc_64/bin/qmake
+QMAKE_PATH = /home/obrol/Qt/6.3.2/gcc_64/bin/qmake
 LIN_FLAGS = -lpthread -pthread -lrt -lm -lsubunit
 GCOVFLAGS = -fprofile-arcs -ftest-coverage
 LDFLAGS = -fprofile-arcs --coverage

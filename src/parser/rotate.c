@@ -1,7 +1,7 @@
 #include "parser.h"
 
 void rotate(int len, float *src, float *res, double theta_x, double theta_y,
-            double theta_z) {
+            double theta_z, int perspective) {
   theta_x *= M_PI / 180;
   theta_y *= M_PI / 180;
   theta_z *= M_PI / 180;
@@ -16,5 +16,13 @@ void rotate(int len, float *src, float *res, double theta_x, double theta_y,
 
     res[k + 0] = res[k + 0] * cos(theta_z) - res[k + 1] * sin(theta_z);
     res[k + 1] = res[k + 0] * sin(theta_z) + res[k + 1] * cos(theta_z);
+
+    float Z = (res[k + 2] < 0) ? (-1) * res[k + 2] : res[k + 2];
+    
+    if (perspective) {
+      res[k + 0] = res[k + 0] / (Z + 1) ;
+      res[k + 1] = res[k + 1] / (Z + 1);
+      res[k + 2] = Z;
+    }
   }
 }

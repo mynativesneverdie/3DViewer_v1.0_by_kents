@@ -38,6 +38,8 @@ private slots:
   void on_radioButton_3_pressed();
   void on_radioButton_4_pressed();
   void on_radioButton_5_pressed();
+  void on_radioButton_6_pressed();
+  void on_radioButton_7_pressed();
 
   void create_frame();
   void jpg_screen();
@@ -52,8 +54,9 @@ private:
   void init_sliders();
   QGifImage *gif;
 
-  int start_time, tmp_time;
-  // float time_print;
+  
+
+  int start_time;
   const int gif_fps = 10, gif_length = 5;
   QTimer *gif_timer;
 };

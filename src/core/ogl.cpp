@@ -71,13 +71,13 @@ void OGLW::paintGL() {
 
   // Set angel
   if (x_offset || y_offset || z_offset) {
-    x_angel += x_offset;
-    y_angel += y_offset;
-    z_angel += z_offset;
+    x_angel += x_offset / 30;
+    y_angel += y_offset / 30;
+    z_angel += z_offset / 30;
   }
 
   rotate(dataset.index_v, dataset.arr_v, dataset.arr_v_copy, x_angel, y_angel,
-         z_angel);
+         z_angel, perspective);
 
   // Normalization
   float norm = 1.0 / (dataset.max_v) * scale;
@@ -152,8 +152,8 @@ void OGLW::mousePressEvent(QMouseEvent *mouse) {
 }
 
 void OGLW::mouseMoveEvent(QMouseEvent *mouse) {
-  y_offset = mouse->pos().y() - mouse_position.y();
-  x_offset = mouse->pos().x() - mouse_position.x();
+  x_offset = mouse->pos().y() - mouse_position.y(); 
+  y_offset = mouse->pos().x() - mouse_position.x();
 
   update();
   emit mouseMove();
