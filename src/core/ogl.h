@@ -3,7 +3,7 @@
 
 #include <QOpenGLFunctions>
 #include <QtOpenGL>
-#include <QtOpenGLWidgets>
+//#include <QtOpenGLWidgets>
 #include <QtWidgets>
 #include <cmath>
 
