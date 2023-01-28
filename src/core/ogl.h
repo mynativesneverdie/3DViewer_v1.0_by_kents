@@ -35,7 +35,6 @@ public:
   QMatrix4x4 mat_norm;
   QMatrix4x4 mat_rotate;
   QMatrix4x4 mat_perspective;
-  QMatrix4x4 mat_move;
 
   // QVector3D line_color_v = {1, 1, 1};
   QVector3D point_color_v = {1, 1, 1};
@@ -47,13 +46,20 @@ public:
 
   struct info dataset = {0, 0, 0, 0, 0, 0};
 
-  int x_angel = 0;
-  int y_angel = 0;
-  int z_angel = 0;
+  float x_offset = 0;
+  float y_offset = 0;
+  float z_offset = 0;
+  
+  float x_shift = 0;
+  float y_shift = 0;
+  float z_shift = 0;
 
-  int x_offset = 0;
-  int y_offset = 0;
-  int z_offset = 0;
+  float x_move = 0;
+  float y_move = 0;
+  float z_move = 0;
+
+  QMatrix4x4 rotate(int x, int y, int z);
+
 
 protected:
   void initializeGL() override;
@@ -73,8 +79,6 @@ private:
   void setup_conf_file();
   void to_default();
   void read_conf_file();
-
-  QMatrix4x4 rotate(int x, int y, int z);
 
 
 signals:

@@ -104,6 +104,18 @@ void Main_Window::init_sliders() {
   ui->horizontalSlider_10->setValue(OGLWidget->line_width * 10);
   ui->horizontalSlider_11->setValue(OGLWidget->scale * 1);
 
+  ui->horizontalSlider_7->setValue(50);
+  ui->horizontalSlider_6->setValue(50);
+  ui->horizontalSlider_8->setValue(50);
+
+  ui->lineEdit_8->setText(QString::number(0));
+  ui->lineEdit_7->setText(QString::number(0));
+  ui->lineEdit_9->setText(QString::number(0));
+
+  ui->lineEdit_2->setText(QString::number(0));
+  ui->lineEdit_3->setText(QString::number(0));
+  ui->lineEdit_6->setText(QString::number(0));
+
   if (OGLWidget->perspective)
     ui->radioButton_7->toggle();
   else
@@ -161,6 +173,8 @@ void Main_Window::on_horizontalSlider_13_valueChanged(int value) {
 
 void Main_Window::on_horizontalSlider_11_valueChanged(int value) {
   OGLWidget->scale = (30 - 0.3) * value / 100;
+  ui->lineEdit_12->setText(QString::number(OGLWidget->scale));
+
   OGLWidget->update();
 }
 
@@ -200,32 +214,50 @@ void Main_Window::on_radioButton_6_pressed() {
 }
 
 void Main_Window::on_horizontalSlider_7_valueChanged(int value) {
-  OGLWidget->mat_move.translate(0.0, 0.0, value);
+  OGLWidget->x_move = (2.0 - 0.0) * value / 100 - 1.0;
+  ui->lineEdit_8->setText(QString::number(OGLWidget->x_move));
+
   OGLWidget->update();
 }
 
 void Main_Window::on_horizontalSlider_6_valueChanged(int value) {
-  OGLWidget->mat_move.translate(0.0, value, 0.0);
+  OGLWidget->y_move = (2.0 - 0.0) * value / 100 - 1.0;
+  ui->lineEdit_7->setText(QString::number(OGLWidget->y_move));
+
   OGLWidget->update();
 }
 
 void Main_Window::on_horizontalSlider_8_valueChanged(int value) {
-  OGLWidget->mat_move.translate(value, 0.0, 0.0);
+  OGLWidget->z_move = (2.0 - 0.0) * value / 100 - 1.0;
+  ui->lineEdit_9->setText(QString::number(OGLWidget->z_move));
+
   OGLWidget->update();
 }
 
 
 void Main_Window::on_horizontalSlider_valueChanged(int value) {
+  OGLWidget->x_offset = (360.0 - 0.0) * value / 100;
+
+  ui->lineEdit_2->setText(QString::number(OGLWidget->x_offset));
+  OGLWidget->mat_rotate = OGLWidget->rotate(OGLWidget->x_offset, OGLWidget->y_offset, OGLWidget->z_offset);
 
   OGLWidget->update();
 }
 
 void Main_Window::on_horizontalSlider_2_valueChanged(int value) {
+  OGLWidget->y_offset = (360.0 - 0.0) * value / 100;
+
+  ui->lineEdit_3->setText(QString::number(OGLWidget->y_offset));
+  OGLWidget->mat_rotate = OGLWidget->rotate(OGLWidget->x_offset, OGLWidget->y_offset, OGLWidget->z_offset);
 
   OGLWidget->update();
 }
 
 void Main_Window::on_horizontalSlider_5_valueChanged(int value) {
+  OGLWidget->z_offset = (360.0 - 0.0) * value / 100;
+
+  ui->lineEdit_6->setText(QString::number(OGLWidget->z_offset));
+  OGLWidget->mat_rotate = OGLWidget->rotate(OGLWidget->x_offset, OGLWidget->y_offset, OGLWidget->z_offset);
 
   OGLWidget->update();
 }

@@ -26,10 +26,6 @@ void OGLW::setup_conf_file() {
             line_width, point_size, point_type, line_color.redF(),
             line_color.greenF(), line_color.blueF(), point_color.redF(),
             point_color.greenF(), point_color.blueF());
-
-    qDebug("%f %f %f %f %f %f\n", line_color.redF(),
-            line_color.greenF(), line_color.blueF(), point_color.redF(),
-            point_color.greenF(), point_color.blueF());
     fclose(file);
   }
 }
@@ -96,8 +92,8 @@ void OGLW::read_conf_file() {
 
   FILE *file = fopen(path_str, "r");
   if (file != NULL) {
-    const GLfloat line_color_v[3] = {0};
-    const GLfloat point_color_v[3] = {0};
+    GLfloat line_color_v[3] = {0};
+    GLfloat point_color_v[3] = {0};
 
     int ch_num =
         fscanf(file, "%d %d %f %f %d %f %f %f %f %f %f", &line_type,
@@ -132,12 +128,16 @@ void OGLW::initializeGL() {
   glEnable(GL_DEPTH_TEST);
 
   mat_rotate.setToIdentity();
-  mat_move.setToIdentity();
 
   background_color.setRgb(0, 0, 0);
 }
 
 void OGLW::paintGL() {
+  move_axis(&dataset, x_shift - x_move, y_shift - y_move, z_shift - z_move);
+  x_shift = x_move;
+  y_shift = y_move;
+  z_shift = z_move;
+
   mat_perspective.setToIdentity();
   if (perspective) {
     mat_perspective.perspective(ANGEL, HEIGHT / WIDTH, NEAR, FAR);
@@ -148,7 +148,7 @@ void OGLW::paintGL() {
   mat_norm *= 1 / dataset.max_v * scale;
   mat_norm.setColumn(3, {0, 0, 0, 1});
 
-  mat_projection = mat_move * mat_norm * mat_rotate * mat_perspective;
+  mat_projection = mat_norm * mat_rotate * mat_perspective;
 
   unsigned int buffer;
   glGenBuffers(1, &buffer);
@@ -191,18 +191,6 @@ void OGLW::paintGL() {
                                     point_color.blueF()};
   glUniform3fv(color_id, 1, point_color_v);
 
-  // for (int i = 0; i < dataset.index_p; i++) {
-  //   qDebug("mm %d %d\n", i, dataset.arr_p[i]);
-  //   for (int j = 0; j < dataset.arr_p[i]; j++) {
-  //     qDebug("gg %d-%d-%d ", i, j, dataset.arr_f[i][j]);
-  //   }
-  //   qDebug("\n");
-  // }
-
-  // GLuint projection_mat = glGetUniformLocation(shader, "projection")
-
-  // glUniformMatrix4fv(projection_mat, 1, GL_FALSE, &projection[0][0]);
-
   // Set background
   glClearColor(background_color.redF(), background_color.greenF(),
                background_color.blueF(), 1.0f);
@@ -238,63 +226,6 @@ void OGLW::paintGL() {
   }
 
   glDrawElements(GL_LINES, dataset.index_f, GL_UNSIGNED_INT, nullptr);
-
-  // // Set angel
-  // if (x_offset || y_offset || z_offset) {
-  //   x_angel += x_offset / 30;
-  //   y_angel += y_offset / 30;
-  //   z_angel += z_offset / 30;
-  // }
-
-  // rotate(dataset.index_v, dataset.arr_v, dataset.arr_v_copy, x_angel,
-  // y_angel,
-  //        z_angel);
-
-  // if (perspective) {
-  //   make_perspective(dataset.index_v, dataset.arr_v_copy);
-  // } else {
-  //   // Normalization
-  //   float norm = 1.0 / (dataset.max_v) * scale;
-
-  //   for (unsigned int i = 0; i < dataset.index_v; i++) {
-  //     dataset.arr_v_copy[i] *= norm;
-  //   }
-  // }
-
-  // // Draw block
-  // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  // glPointSize(point_size);
-  // glLineWidth(line_width);
-
-  // glEnableClientState(GL_VERTEX_ARRAY);
-
-  // // Set dots color
-  // glColor3f(point_color.redF(), point_color.greenF(), point_color.blueF());
-
-  // glDisableClientState(GL_VERTEX_ARRAY);
-
-  // x_offset = 0;
-  // y_offset = 0;
-  // z_offset = 0;
-
-  // if (vao.isCreated()) {
-  //   program->bind();
-  //   vao.bind();
-
-  //   perspectiveM.setToIdentity();
-  //   projM = normM;
-
-  //   program->setUniformValue(program->uniformLocation("projection"), projM);
-  //   program->setUniformValue(program->uniformLocation("perspective"),
-  //   perspectiveM);
-  //   // prog->setUniformValue(prog->uniformLocation("color"), lineColorV);
-
-  //   glDrawElements(GL_LINES, dataset.index_f, GL_UNSIGNED_INT, 0);
-  //   // glDrawArrays(GL_POINTS, 0, dataset.index_v);
-
-  //   vao.release();
-  //   program->release();
-  // }
 }
 
 QMatrix4x4 OGLW::rotate(int x, int y, int z) {
@@ -325,5 +256,4 @@ void OGLW::mouseMoveEvent(QMouseEvent *mouse) {
   mat_rotate = rotate(x_offset, y_offset, z_offset);
 
   update();
-  emit mouseMove();
 }
