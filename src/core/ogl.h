@@ -15,7 +15,7 @@
 #define DEPTH -2.0f
 
 extern "C" {
-#include "../parser/parser.h"
+#include "../parser/s21_parser.h"
 }
 
 class OGLW : public QOpenGLWidget, protected QOpenGLFunctions {

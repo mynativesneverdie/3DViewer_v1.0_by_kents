@@ -14,7 +14,10 @@ unsigned int indeces[30] = {1, 7, 5, 1, 3, 7, 1, 4, 3, 1, 2, 4, 3, 8, 7,
 
 OGLW::OGLW(QWidget *parent) : QOpenGLWidget(parent) { this->read_conf_file(); }
 
-OGLW::~OGLW() { this->setup_conf_file(); }
+OGLW::~OGLW() {
+  free_dataset(&dataset);
+  this->setup_conf_file();
+}
 
 void OGLW::setup_conf_file() {
   setlocale(LC_ALL, "POSIX");
@@ -100,10 +103,7 @@ void OGLW::read_conf_file() {
                &perspective, &line_width, &point_size, &point_type,
                &(line_color_v[0]), &(line_color_v[1]), &(line_color_v[2]),
                &(point_color_v[0]), &(point_color_v[1]), &(point_color_v[2]));
-
-    qDebug("%f %f %f %f %f %f\n", line_color_v[0], line_color_v[1], line_color_v[2],
-               point_color_v[0], point_color_v[1], point_color_v[2]);
-
+               
     if (ch_num != 11 || line_type > 1 || line_type < 0 || perspective > 1 ||
         perspective < 0 || line_width > 5 || line_width < 1 ||
         point_size > 10 || point_size < 1 || point_type > 2 || point_type < 0 ||

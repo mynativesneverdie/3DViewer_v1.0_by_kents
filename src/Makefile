@@ -1,52 +1,93 @@
-CC = gcc -g
+TEST_SRC_DIR := ./parser/test/
+SRC_DIR := ./parser
+
+# chage the qmake path
 QMAKE_PATH = /home/obrol/Qt/6.3.2/gcc_64/bin/qmake
-LIN_FLAGS = -lpthread -pthread -lrt -lm -lsubunit
-GCOVFLAGS = -fprofile-arcs -ftest-coverage
-LDFLAGS = -fprofile-arcs --coverage
-LCHECK = -lcheck
-ifeq ($(shell uname), Linux)
-LCHECK += $(LIN_FLAGS)
-endif
 
-SOURCES_TEST:= $(wildcard parser/*.c)
+LIB_SRC = $(shell find $(SRC_DIR) -maxdepth 1 -name 's21*.c')
+LIB_OBJ := $(LIB_SRC:.c=.o)
 
-OBJ_GCOV_DIR := obj_gcov
-OBJECTS_GCOV := $(addprefix obj_gcov/,$(SOURCES_TEST:.c=.o))
+TEST_SRC = $(shell find $(TEST_SRC_DIR) -maxdepth 1 -name 's21*.c')
+TEST_OBJ := $(TEST_SRC:.c=.o)
+
+OS := $(shell uname -s)
+
+CFLAGS := -c
+GCOV_CFLAGS := -fprofile-arcs -ftest-coverage -fPIC
+LFLAGS := -lcheck -lpthread -lrt -lm -lsubunit # <--- unix
+
+GCOV_LFLAGS := --coverage
+
+TEST_CFLAGS += $(GCOV_CFLAGS)
+TEST_CFLAGS += $(CFLAGS)
+
+TEST_LFLAGS += $(GCOV_LFLAGS)
+TEST_LFLAGS += $(LFLAGS)
+
+LIB_CFLAGS += $(CFLAGS)
+
+LIB_LFLAGS += $(LFLAGS)
+
+CC := gcc
+COV := gcovr
 
 all: install
 
 install:
-	sh build/script1.sh $(QMAKE_PATH)
+	sh build/install.sh $(QMAKE_PATH)
 
 uninstall:
-	rm -rf viewer.app
+	rm -rf viewer
 
 clean:
-	make clean_tests
-	rm -rf viewer* build/.*q* \
-	build/*.o build/*.h \
-	build/*.cpp build/Makefile \
-	build/viewer.app build/.tmp \
-	rm -rf *.gz build/*bak
+	rm -rf build/.*q* \
+	rm -rf ./**/*.o build/*.h \
+	rm -rf ./**/*.gcno \
+	rm -rf ./**/*.gcda \
+	rm -rf ./**/test/*.o \
+	rm -rf build/*.cpp build/Makefile \
+	rm -rf build/.tmp build/s21_3dviewer_test \
+	rm -rf *.gz build/*bak \
+	rm -rf 3DViewer.tar.gz \
+	rm -rf html_report
 
 dist:
-	sh build/script2.sh
+	-@mkdir 3DViewer_dist
+	-cp -r ./build ./3DViewer_dist/
+	-cp -r ./core ./3DViewer_dist/
+	-cp -r ./parser ./3DViewer_dist
+	-cp -r ./gif ./3DViewer_dist
+	-cp -r ./objects ./3DViewer_dist
+	-cp -r ./qtgifimage ./3DViewer_dist
+	-cp -r ./screens ./3DViewer_dist
+	
+	-cp ./readme.html ./3DViewer_dist
+	-cp ./Makefile ./3DViewer_dist
+	-cp ./config.cfg ./3DViewer_dist
 
-create_dir:
-	@mkdir -p $(OBJ_GCOV_DIR)
+	tar -czf 3DViewer.tar.gz 3DViewer_dist/
+	rm -rf ./3DViewer_dist
 
-test: parser/test/tests.c $(OBJECTS_GCOV)
-	$(CC) $< $(OBJ_GCOV_DIR)/*.o -o $@ $(LCHECK) $(LDFLAGS) $(GCOVFLAGS)
-	./$@
-	@rm -f *tests*
+dvi:
+ifeq ($(OS), Linux)
+	firefox readme.html
+else
+	open readme.html
+endif
 
-$(OBJ_GCOV_DIR)/%.o: %.c create_dir
-	@$(CC) $(GCOVFLAGS) -c $< -o obj_gcov/$(subst /,_,$@)
+tests: $(TEST_OBJ) $(LIB_OBJ)
+	-@mkdir ./build
+	$(CC) $(TEST_OBJ) $(LIB_OBJ) $(TEST_LFLAGS) -o ./build/s21_3dviewer_test
+	./build/s21_3dviewer_test
 
-clean_tests: 
-	rm -rf obj_gcov
-	rm -rf test *gcda *gcno
-	rm -rf out
+$(LIB_OBJ): %.o: %.c
+	$(CC) $(TEST_CFLAGS) -g $< -o $@
 
+$(TEST_OBJ): %.o: %.c
+	$(CC) $(CFLAGS) -g $< -o $@
+
+gcov_report:
+	-@mkdir ./html_report
+	$(COV) . --html --html-details -o ./html_report/coverage_report.html
 
 .PHONY: all install uninstall clean dvi dist gcov_report clean_tests

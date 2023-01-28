@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "s21_parser.h"
 #include <locale.h>
 
 static void parse_f(FILE *file, struct info *src);

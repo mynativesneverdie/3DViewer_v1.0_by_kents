@@ -14,7 +14,7 @@ struct info {
   float max_v;
 };
 
-void parse_file(char *fileName, struct info *src);
+void parse_file(char *file_name, struct info *src);
 void free_dataset(struct info *src);
 
 void move_axis(struct info *src, float x_offset, float y_offset, float z_offset);
