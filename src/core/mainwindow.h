@@ -7,6 +7,8 @@
 
 #include "ogl.h"
 
+#define GIF_TIME 5000
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Main_Window;
@@ -24,7 +26,6 @@ public:
 
 private slots:
   void press_start_gif();
-  void press_stop_gif();
   void choose_file_pressed();
 
   void on_horizontalSlider_13_valueChanged(int value);
@@ -32,18 +33,28 @@ private slots:
   void on_horizontalSlider_9_valueChanged(int value);
   void on_horizontalSlider_12_valueChanged(int value);
   void on_horizontalSlider_11_valueChanged(int value);
+
+  void on_horizontalSlider_valueChanged(int value);
+  void on_horizontalSlider_2_valueChanged(int value);
+  void on_horizontalSlider_5_valueChanged(int value);
+
+  void on_horizontalSlider_7_valueChanged(int value);
+  void on_horizontalSlider_6_valueChanged(int value);
+  void on_horizontalSlider_8_valueChanged(int value);
+
   void on_BackColorSlider_valueChanged(int value);
 
   void on_radioButton_3_pressed();
   void on_radioButton_4_pressed();
   void on_radioButton_5_pressed();
+  void on_radioButton_6_pressed();
+  void on_radioButton_7_pressed();
 
   void create_frame();
   void jpg_screen();
   void bmp_screen();
 
   void on_radioButton_solid_pressed();
-
   void on_radioButton_dashed_pressed();
 
 private:
@@ -51,8 +62,7 @@ private:
   void init_sliders();
   QGifImage *gif;
 
-  int start_time, tmp_time;
-  float time_print;
+  int start_time;
   const int gif_fps = 10, gif_length = 5;
   QTimer *gif_timer;
 };
