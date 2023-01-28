@@ -11,14 +11,10 @@ struct info {
   unsigned int index_p;
   unsigned int *arr_f;
   float *arr_v;
-  float *arr_v_copy;
-  unsigned int *arr_p;
   float max_v;
 };
 
 void parse_file(char *fileName, struct info *src);
 void free_dataset(struct info *src);
 
-void rotate(int len, float *src, float *res, double theta_x, double theta_y,
-            double theta_z, int perspective);
 #endif // SRC_PARSER_PARSER_H_

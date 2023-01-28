@@ -14,8 +14,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     ogl.cpp \
-    ../parser/parser.c \
-    ../parser/rotate.c
+    ../parser/parser.c
 
 HEADERS += \
     mainwindow.h \

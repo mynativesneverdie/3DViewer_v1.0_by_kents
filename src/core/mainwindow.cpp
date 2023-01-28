@@ -17,19 +17,25 @@ Main_Window::Main_Window(QWidget *parent)
   connect(ui->pushButton_4, SIGNAL(pressed()), this, SLOT(press_start_gif()));
   connect(ui->pushButton_2, SIGNAL(pressed()), this, SLOT(bmp_screen()));
   connect(ui->pushButton_3, SIGNAL(pressed()), this, SLOT(jpg_screen()));
-  connect(ui->radioButton_3, SIGNAL(pressed()), this, SLOT(on_radioButton_3_pressed()));
-  connect(ui->radioButton_4, SIGNAL(pressed()), this, SLOT(on_radioButton_4_pressed()));
-  connect(ui->radioButton_5, SIGNAL(pressed()), this, SLOT(on_radioButton_5_pressed()));
-  connect(ui->radioButton_solid, SIGNAL(pressed()), this, SLOT(on_radioButton_solid_pressed()));
-  connect(ui->radioButton_dashed, SIGNAL(pressed()), this, SLOT(on_radioButton_dashed_pressed()));
+  connect(ui->radioButton_3, SIGNAL(pressed()), this,
+          SLOT(on_radioButton_3_pressed()));
+  connect(ui->radioButton_4, SIGNAL(pressed()), this,
+          SLOT(on_radioButton_4_pressed()));
+  connect(ui->radioButton_5, SIGNAL(pressed()), this,
+          SLOT(on_radioButton_5_pressed()));
+  connect(ui->radioButton_solid, SIGNAL(pressed()), this,
+          SLOT(on_radioButton_solid_pressed()));
+  connect(ui->radioButton_dashed, SIGNAL(pressed()), this,
+          SLOT(on_radioButton_dashed_pressed()));
 }
+
 
 void Main_Window::press_start_gif() {
   ui->pushButton_4->setEnabled(0);
 
   gif = new QGifImage;
   gif->setDefaultDelay(1000 / gif_fps);
-  
+
   start_time = 0;
   gif_timer = new QTimer(this);
 
@@ -53,10 +59,10 @@ void Main_Window::create_frame() {
     ui->pushButton_4->setEnabled(1);
 
     unsigned int now_time =
-      std::chrono::duration_cast<std::chrono::milliseconds>(
-          std::chrono::system_clock::now().time_since_epoch())
-          .count();
-    
+        std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count();
+
     QString name = "./gif/" + QString::number(now_time) + ".gif";
     gif->save(name);
     free(gif);
@@ -158,10 +164,10 @@ void Main_Window::on_horizontalSlider_11_valueChanged(int value) {
   OGLWidget->update();
 }
 
- void Main_Window::on_BackColorSlider_valueChanged(int value) {
-   OGLWidget->backgroundColor.setHsl(value, 255, 127);
-   OGLWidget->update();
- }
+void Main_Window::on_BackColorSlider_valueChanged(int value) {
+  OGLWidget->background_color.setHsl(value, 255, 127);
+  OGLWidget->update();
+}
 
 void Main_Window::on_horizontalSlider_9_valueChanged(int value) {
   OGLWidget->line_color.setHsl(value, 255, 127);
@@ -173,16 +179,14 @@ void Main_Window::on_horizontalSlider_12_valueChanged(int value) {
   OGLWidget->update();
 }
 
-void Main_Window::on_radioButton_solid_pressed()
-{
-    OGLWidget->line_type = 0;
-    OGLWidget->update();
+void Main_Window::on_radioButton_solid_pressed() {
+  OGLWidget->line_type = 0;
+  OGLWidget->update();
 }
 
-void Main_Window::on_radioButton_dashed_pressed()
-{
-    OGLWidget->line_type = 1;
-    OGLWidget->update();
+void Main_Window::on_radioButton_dashed_pressed() {
+  OGLWidget->line_type = 1;
+  OGLWidget->update();
 }
 
 void Main_Window::on_radioButton_7_pressed() {
@@ -195,3 +199,33 @@ void Main_Window::on_radioButton_6_pressed() {
   OGLWidget->update();
 }
 
+void Main_Window::on_horizontalSlider_7_valueChanged(int value) {
+  OGLWidget->mat_move.translate(0.0, 0.0, value);
+  OGLWidget->update();
+}
+
+void Main_Window::on_horizontalSlider_6_valueChanged(int value) {
+  OGLWidget->mat_move.translate(0.0, value, 0.0);
+  OGLWidget->update();
+}
+
+void Main_Window::on_horizontalSlider_8_valueChanged(int value) {
+  OGLWidget->mat_move.translate(value, 0.0, 0.0);
+  OGLWidget->update();
+}
+
+
+void Main_Window::on_horizontalSlider_valueChanged(int value) {
+
+  OGLWidget->update();
+}
+
+void Main_Window::on_horizontalSlider_2_valueChanged(int value) {
+
+  OGLWidget->update();
+}
+
+void Main_Window::on_horizontalSlider_5_valueChanged(int value) {
+
+  OGLWidget->update();
+}

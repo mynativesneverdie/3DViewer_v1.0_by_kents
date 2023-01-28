@@ -33,6 +33,15 @@ private slots:
   void on_horizontalSlider_9_valueChanged(int value);
   void on_horizontalSlider_12_valueChanged(int value);
   void on_horizontalSlider_11_valueChanged(int value);
+
+  void on_horizontalSlider_valueChanged(int value);
+  void on_horizontalSlider_2_valueChanged(int value);
+  void on_horizontalSlider_5_valueChanged(int value);
+
+  void on_horizontalSlider_7_valueChanged(int value);
+  void on_horizontalSlider_6_valueChanged(int value);
+  void on_horizontalSlider_8_valueChanged(int value);
+
   void on_BackColorSlider_valueChanged(int value);
 
   void on_radioButton_3_pressed();
@@ -46,15 +55,12 @@ private slots:
   void bmp_screen();
 
   void on_radioButton_solid_pressed();
-
   void on_radioButton_dashed_pressed();
 
 private:
   Ui::Main_Window *ui;
   void init_sliders();
   QGifImage *gif;
-
-  
 
   int start_time;
   const int gif_fps = 10, gif_length = 5;
